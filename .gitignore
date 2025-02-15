@@ -1,9 +1,8 @@
-# Ignore build directories
+
 /build/
 /bin/
 /obj/
 
-# Ignore IDE and editor files
 .vscode/
 .idea/
 *.iml
@@ -12,29 +11,23 @@
 *.userosscache
 *.sln
 
-# Ignore dependency directories (e.g., for CMake)
 CMakeFiles/
 CMakeCache.txt
 Makefile
 cmake_install.cmake
 *.cmake
 
-# Ignore log files
 *.log
 
-# Ignore temporary or backup files
 *~
 *.swp
 *.bak
 
-# Ignore output files (for example, compressed files)
 *.bin
 *.tar.gz
 *.zip
 
-# Ignore executable files
 text.exe
 
-# Ignore system files
 .DS_Store
 Thumbs.db
