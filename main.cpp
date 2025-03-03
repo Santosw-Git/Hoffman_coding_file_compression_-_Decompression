@@ -160,6 +160,61 @@ public:
 
         writeCompressedDataToFile(byte_array);  
     }
+    void decompressFile() {
+        // Open compressed binary file
+        ifstream inFile(outputFile, ios::binary);
+        if (!inFile) {
+            cerr << "Error: Could not open compressed file " << outputFile << endl;
+            exit(1);
+        }
+        
+        // Read binary file content
+        vector<uint8_t> byteArray((istreambuf_iterator<char>(inFile)), {});
+        inFile.close();
+        
+        
+        string bitString;
+        for (uint8_t byte : byteArray) {
+            bitString += bitset<8>(byte).to_string();
+        }
+        
+        // Extract padding info (first 8 bits)
+        int padding = bitset<8>(bitString.substr(0, 8)).to_ulong();
+        bitString = bitString.substr(8); // Remove padding info bits
+        bitString = bitString.substr(0, bitString.size() - padding); // Remove padding
+        
+        // Decode using Huffman tree
+        Node* root = Build_Binary_tree(); // Rebuild Huffman Tree
+        Node* current = root;
+        string decodedText;
+        
+        for (char bit : bitString) {
+            if (bit == '0') {
+                current = current->left;
+            } else {
+                current = current->right;
+            }
+            
+            // If leaf node, retrieve character
+            if (!current->left && !current->right) {
+                decodedText += current->ch;
+                current = root;
+            }
+        }
+        
+        // Write decoded text to output file
+        string decompressedFile = inputFile.substr(0, inputFile.find_last_of(".")) + "_decompressed.txt";
+        ofstream outFile(decompressedFile);
+        if (!outFile) {
+            cerr << "Error: Could not create output file " << decompressedFile << endl;
+            exit(1);
+        }
+        
+        outFile << decodedText;
+        outFile.close();
+        
+        cout << "Decompression successful! Decompressed file saved as: " << decompressedFile << endl;
+    }
 };
 
 int main() {
