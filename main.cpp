@@ -224,6 +224,7 @@ int main() {
 
     HuffmanCode huff(inputFileName);
     huff.compressFile();
+    huff.decompressFile();
 
     return 0;
 }
